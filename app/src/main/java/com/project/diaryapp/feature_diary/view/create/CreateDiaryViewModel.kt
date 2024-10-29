@@ -5,6 +5,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.database.DataSnapshot
@@ -13,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storageMetadata
 import com.project.diaryapp.feature_diary.data.repository.UploadImageImpl
 import com.project.diaryapp.feature_diary.data.source.FirebaseRepositoryImpl
 import com.project.diaryapp.feature_diary.domain.model.Diary
@@ -113,7 +115,7 @@ class CreateDiaryViewModel @Inject constructor(
                     if the session uri is not null then it means that our upload failed and we need to save that session uri to
                     retry in the future
                      */
-                    if(sessionUri!=null) {
+                    if (sessionUri != null) {
                         viewModelScope.launch(Dispatchers.IO) {
                             uploadImage.addImageToUpload(
                                 ImageToUpload(
@@ -135,6 +137,15 @@ class CreateDiaryViewModel @Inject constructor(
         downloadUrlList.add(url)
     }
 
+    fun retryImageUpload(imageToUpload: ImageToUpload,onDone: () -> Unit){
+        storageReference.child(imageToUpload.localPath).putFile(
+            imageToUpload.imageUri.toUri() ,
+            storageMetadata { },
+            imageToUpload.sessionUri.toUri()
+        ).addOnSuccessListener {
+            onDone()
+        }
+    }
     //update diary
     fun updateDiary(diary: Diary) {
         viewModelScope.launch {
@@ -162,6 +173,7 @@ class CreateDiaryViewModel @Inject constructor(
                 .get()
                 .addOnSuccessListener {
                     val diary = it.toObject(Diary::class.java)
+
                     setCurrentDiary(diary!!)
                     setTitle(diary.title)
                     setDescription(diary.description)

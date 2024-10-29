@@ -14,7 +14,7 @@ fun rememberGalleryState() : GalleryState {
 class GalleryState {
 
     val images = mutableStateListOf<GalleryImage>()
-    val imagesToBeDeleted = mutableStateListOf<GalleryImage>()
+    private val imagesToBeDeleted = mutableStateListOf<GalleryImage>()
 
     fun addImage(image : GalleryImage){
         images.add(image)

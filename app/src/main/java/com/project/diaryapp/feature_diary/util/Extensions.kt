@@ -1,5 +1,6 @@
 package com.project.diaryapp.feature_diary.util
 
+import com.project.diaryapp.feature_diary.domain.model.ImageToUpload
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
@@ -14,5 +15,9 @@ fun Instant.toLocalDate() :LocalDate{
 fun Date.toFormattedDate():String{
    val format = SimpleDateFormat("hh:mm a", Locale.US)
    return format.format(this)
+}
+
+fun retryImageUpload(imageToUpload: ImageToUpload){
+
 }
 
