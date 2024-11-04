@@ -8,4 +8,8 @@
 The app follows MVVM architecture
 ## Cloud Service
 Firebase is used for storing images, diaries as well as user data & authentication
+## Features
+* HILT injection
+* MVVM architecture
+* One tap sign in
 
