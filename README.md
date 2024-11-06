@@ -13,3 +13,6 @@ Firebase is used for storing images, diaries as well as user data & authenticati
 * MVVM architecture
 * One tap sign in
 
+## One Tap Sign In -
+It makes use of firebase for handling sign ins.
+Whenever a log in token is received, the user is logged in the application and then data is stored in firestore. The token allows us to fetch user data such as name, email, pfp and much more.
